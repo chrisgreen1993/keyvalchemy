@@ -12,4 +12,11 @@ __author__ = 'Chris Green'
 from .keyvalchemy import KeyValchemy, ClosedKeyValchemy, ConnectionClosedError
 
 def open(db_url, protocol=3, engine_kwargs=None):
+    """
+    Used to open connection to database
+    Args:
+        See KeyValchemy.__init__()
+    Returns:
+        KeyValchemy object
+    """
     return KeyValchemy(db_url, protocol, engine_kwargs)
