@@ -42,7 +42,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test___init__(self):
         """
-        Tests __init__, checks to see if db has correct tables
+        Tests __init__(), checks to see if db has correct tables
         """
         self.assertIsInstance(self.db, KeyValchemy)
         self.assertEqual(1, len(self.db.metadata.tables))
@@ -51,7 +51,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test___getitem__(self):
         """
-        Tests __getitem__ fetches values from db or raises KeyError
+        Tests __getitem__() fetches values from db or raises KeyError
         """
         # Doesnt exist
         self.assertRaises(KeyError, self.db.__getitem__, 'key')
@@ -61,7 +61,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test___setitem__(self):
         """
-        Tests __setitem__ saves to db
+        Tests __setitem__() saves to db
         """
         # Exists
         result = self.test_db.conn.execute(select([self.test_db.store.c.value]).where(self.test_db.store.c.key == 'key1')).fetchone()['value']
@@ -80,7 +80,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test___delitem__(self):
         """
-        Tests __delitem__ deletes from db or raises KeyError
+        Tests __delitem__() deletes from db or raises KeyError
         """
         # Doesnt exist
         self.assertRaises(KeyError, self.db.__delitem__, 'key')
@@ -93,7 +93,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test___len__(self):
         """
-        Tests __len__ gets correct no of records
+        Tests __len__() gets correct no of records
         """
         self.assertEqual(3, len(self.db))
         self.test_db.conn.execute(self.test_db.store.insert().values(key='another', value='testing'))
@@ -101,7 +101,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test___contains__(self):
         """
-        Tests __contains__ returns whether a key exists
+        Tests __contains__() returns whether a key exists
         """
         # exists
         self.assertTrue('key1' in self.db)
@@ -110,7 +110,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test_keys(self):
         """
-        Tests keys returns correct keys for db
+        Tests keys() returns correct keys for db
         """
         self.assertEqual(['key1', 'key2', 'key3'], list(self.db.keys()))
         # empty
@@ -119,7 +119,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test_values(self):
         """
-        Tests values returns correct values for db
+        Tests values() returns correct values for db
         """
         self.assertEqual(['string', [1,2,3,4,5], {'k1': 'v1', 'k2': [('stuff',1),(30,20)]}], list(self.db.values()))
         # empty
@@ -128,7 +128,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test_items(self):
         """
-        Tests items returns correct items for db
+        Tests items() returns correct items for db
         """
         self.assertEqual([('key1', 'string'), ('key2', [1,2,3,4,5]), ('key3', {'k1': 'v1', 'k2': [('stuff',1),(30,20)]})], list(self.db.items()))
         # empty
@@ -137,7 +137,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test_clear(self):
         """
-        Tests clear removes all values from db
+        Tests clear() removes all values from db
         """
         count = self.test_db.conn.execute(select([func.count()]).select_from(self.test_db.store)).fetchone()[0]
         self.assertEqual(3, count)
@@ -147,7 +147,7 @@ class KeyValchemyTestCase(unittest.TestCase):
 
     def test_with_statement(self):
         """
-        Tests __enter__ and __exit__ work as intended
+        Tests __enter__() and __exit__() work as intended
         """
         with KeyValchemy(os.environ['DB_URL']) as kv:
             self.assertIsInstance(self.db, KeyValchemy)
@@ -185,7 +185,7 @@ class ClosedKeyValchemyTestCase(unittest.TestCase):
 
     def test_closed(self):
         """
-        Tests whether closed method raises ConnectionClosedError
+        Tests whether closed() raises ConnectionClosedError
         """
         self.assertRaises(ConnectionClosedError, ClosedKeyValchemy.closed)
 
