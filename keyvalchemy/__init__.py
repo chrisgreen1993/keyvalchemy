@@ -9,7 +9,7 @@ __title__ = 'keyvalchemy'
 __version__ = '0.0.1'
 __author__ = 'Chris Green'
 
-from .keyvalchemy import KeyValchemy
+from .keyvalchemy import KeyValchemy, ClosedKeyValchemy, ConnectionClosedError
 
 def open(db_url, protocol=3, engine_kwargs=None):
     return KeyValchemy(db_url, protocol, engine_kwargs)

@@ -3,6 +3,9 @@ from sqlalchemy import create_engine, MetaData, Table, Column, String, PickleTyp
 from sqlalchemy.sql import select, func, exists
 
 
+class ConnectionClosedError(ValueError):
+    pass
+
 class KeyValchemy(collections.MutableMapping):
 
     def __init__(self, db_url, protocol=3, engine_kwargs=None):
@@ -83,4 +86,14 @@ class KeyValchemy(collections.MutableMapping):
         self.close()
 
     def close(self):
+        if isinstance(self, ClosedKeyValchemy):
+            return
         self.conn.close()
+        self.__class__ = ClosedKeyValchemy
+
+class ClosedKeyValchemy(KeyValchemy):
+
+    def closed(*args, **kwargs):
+        raise ConnectionClosedError('Database connection is closed')
+
+    __getitem__ = __setitem__ = __delitem__ = __contains__ = keys = values = items = __len__ = closed
